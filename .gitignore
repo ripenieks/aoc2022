@@ -1,0 +1,5 @@
+!*.cpp
+!*.h
+!input
+a.out
+.gdb_history
