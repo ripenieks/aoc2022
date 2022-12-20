@@ -8,8 +8,7 @@ int first(const std::vector<std::string>& input);
 int second(const std::vector<std::string>& input);
 
 const char items[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                      0000000000000001
-                      00000000000000000000000000000000000001
+
 int get_priority(const std::string& rucksack)
 {
     long long hash_a = 0;
@@ -19,17 +18,28 @@ int get_priority(const std::string& rucksack)
         for(int j = 0; j < rucksack.length() / 2; j++)
         {
             if (rucksack[j] == items[sizeof(items) - i])
+            {
                 hash_a |= 1;
+            }
             if (rucksack[j + rucksack.length() / 2] == items[sizeof(items) - i])
+            {
                 hash_b |= 1;
+            }
         }
         hash_a = hash_a << 1;
         hash_b = hash_b << 1;
     }
-    printf("%s\n", rucksack.c_str());
     long long overlap = hash_a & hash_b;
-    printf("overlap: %ld\n", overlap);
-    return 0;
+    int priority = 0;
+    for (int i = 0; i < sizeof(items); i++)
+    {
+        if (overlap & 1 == 1) 
+        {
+            priority += i + 1;
+        }
+        overlap = overlap >> 1;
+    }
+    return priority;
 }
 
 int first(const std::vector<std::string>& input)
