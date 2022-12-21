@@ -52,9 +52,66 @@ int first(const std::vector<std::string>& input)
     return sum;
 }
 
+int get_badge(const std::vector<std::string>& three_input)
+{
+    long long hash_a = 0;
+    long long hash_b = 0;
+    long long hash_c = 0;
+
+    for (int i = 0; i < sizeof(items); i++)
+    {
+        for (int j = 0; j < three_input[0].length(); j++)
+        {
+            if (three_input[0][j] == items[sizeof(items) - i])
+            {
+                hash_a |= 1;
+            }
+        }
+        for (int j = 0; j < three_input[1].length(); j++)
+        {
+            if (three_input[1][j] == items[sizeof(items) - i])
+            {
+                hash_b |= 1;
+            }
+        }
+        for (int j = 0; j < three_input[2].length(); j++)
+        {
+            if (three_input[2][j] == items[sizeof(items) - i])
+            {
+                hash_c |= 1;
+            }
+        }
+        hash_a = hash_a << 1;
+        hash_b = hash_b << 1;
+        hash_c = hash_c << 1;
+    }
+    long long overlap = hash_a & hash_b & hash_c;
+    
+    int priority = 0;
+    for (int i = 0; i < sizeof(items); i++)
+    {
+        if (overlap & 1 == 1) 
+        {
+            priority += i + 1;
+        }
+        overlap = overlap >> 1;
+    }
+    return priority;
+}
+
 int second(const std::vector<std::string>& input)
 {
-    return 0;
+    int sum = 0;
+    for (int i = 0; i < input.size(); i = i+3)
+    {
+        std::vector<std::string> three_input;
+        for (int j = 0; j < 3; j++)
+        {
+            three_input.push_back(input[i + j]);
+        }
+        sum += get_badge(three_input);
+    }
+    return sum;
 }
 
 int main()
